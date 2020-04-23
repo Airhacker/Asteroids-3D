@@ -11,9 +11,9 @@ const playerNameInput = document.querySelector("#player-name");
 
 // Event Listeners
 beginBtn.addEventListener("click", () => {
+	playerName = playerNameInput.value;
 	if (playerName.length >= 1) {
 		firstPage.style.display = "none";
-		playerName = playerNameInput.value;
 		console.log(playerName);
 	} else {
 		alert("Please Enter a Name");
