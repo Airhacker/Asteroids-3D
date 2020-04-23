@@ -1,0 +1,30 @@
+.first-page {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+
+	h1 {
+		font-size: 5rem;
+		text-align: center;
+	}
+
+	input {
+		width: 45%;
+		padding: 2rem 0rem;
+		font-size: 2rem;
+		color: whitesmoke;
+		background-color: #292d32;
+		border: 3px solid whitesmoke;
+	}
+
+	button {
+		padding: 2rem 7rem;
+		border: 3px solid whitesmoke;
+		background: #292d32;
+		color: whitesmoke;
+		font-size: 2rem;
+		font-weight: bold;
+	}
+}
