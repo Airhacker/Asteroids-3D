@@ -1,5 +1,5 @@
 // Variables
-let scene, camera, renderer, starGeo, stars, meteorGroup;
+let scene, camera, renderer, starGeo, stars, meteorGeo, meteors, spaceShip;
 let starAmount = 2500;
 const fov = 60;
 const gameArea = document.querySelector(".game-space");
@@ -47,8 +47,8 @@ function init() {
 	}
 	let sprite = new THREE.TextureLoader().load("./images/starTexture.jpg");
 	let starMaterial = new THREE.PointsMaterial({
-		color: 0xaaaaaa,
-		size: 0.7,
+		color: sprite,
+		size: 0.25,
 		map: sprite,
 	});
 
@@ -72,24 +72,13 @@ function init() {
 	directionalLight.position.set(-5, 2, 0);
 	scene.add(directionalLight);
 
-	// Meteor Loader
-	meteorGeo = new THREE.SphereGeometry(0.2, 8, 6);
-	meteorMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-	meteor = new THREE.Mesh(meteorGeo, meteorMat);
-
-	// Meteor Array
-	meteorGroup = new THREE.Object3D();
-	for (let i = 0; i < 100; i++) {
-		meteorGroup.add(meteor);
-	}
-	scene.add(meteorGroup);
-	//meteor.position.set(Math.random() * 600 - 300, 0, -450);
-
+	meteorCreator();
 	// Run Animation Loop
-	animate(meteorGroup);
+	animate();
 }
 
-function animate(group) {
+function animate() {
+	// Star Settings
 	starGeo.vertices.forEach((p) => {
 		p.velocity += p.acceleration;
 		p.z += p.velocity;
@@ -100,14 +89,21 @@ function animate(group) {
 	});
 	starGeo.verticesNeedUpdate = true;
 
-	// Meteor Movement Settings
+	// Meteor Settings
+	meteorGeo.vertices.forEach((m) => {
+		m.velocity += m.acceleration;
+		m.z += m.velocity;
+		if (m.z > 50) {
+			m.z = Math.random() * -450 - 200;
+			m.x = Math.random() * 50 - 25;
+			m.velocity = 0;
+		}
 
-	//group.forEach();
-
-	if (meteor.position.z >= 50) {
-		meteor.position.z += 0.25;
-	} else {
-	}
+		if (spaceShip == true) {
+			alert("Hello");
+		}
+	});
+	meteorGeo.verticesNeedUpdate = true;
 
 	renderer.render(scene, camera);
 	requestAnimationFrame(animate);
@@ -135,4 +131,29 @@ window.addEventListener("keydown", (e) => {
 
 function shipFire() {}
 
-function meteors() {}
+function meteorCreator() {
+	// Meteor Settings
+	meteorGeo = new THREE.Geometry();
+	for (let i = 0; i < 50; i++) {
+		meteor = new THREE.Vector3(
+			Math.random() * 50 - 25,
+			0,
+			Math.random() * -450 - 200
+		);
+		// Meteor velocity settings
+
+		meteor.velocity = 0;
+		meteor.acceleration = 0.005;
+
+		meteorGeo.vertices.push(meteor);
+	}
+	let meteorSprite = new THREE.TextureLoader().load("./images/meteor.jpg");
+	let meteorMaterial = new THREE.PointsMaterial({
+		color: 0xaaaaaa,
+		size: 2,
+		map: meteorSprite,
+	});
+
+	meteors = new THREE.Points(meteorGeo, meteorMaterial);
+	scene.add(meteors);
+}
